@@ -5,5 +5,14 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	server: {
+		proxy: {
+			'/infojobs':       {
+        target: 'https://api.infojobs.net/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/infojobs/, '')
+      }
+		}
 	}
 });
