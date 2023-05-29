@@ -13,9 +13,9 @@ export async function load(event) {
     `)
 
   const data = await response.json()
-
+  const offerList = data.offers
 
   return {
-    offerList: data
+    offerList
   }
 } 
