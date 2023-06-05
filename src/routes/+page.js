@@ -1,9 +1,8 @@
 import { error } from "@sveltejs/kit"
 import { DEFAULT_API_CONFIG } from "$lib/constants"
+export async function load({ fetch }) {
 
-export async function load(event) {
-
-  const response = await event.fetch(`infojobs/api/9/offer`, DEFAULT_API_CONFIG)
+  const response = await fetch(`infojobs/api/9/offer`, DEFAULT_API_CONFIG)
 
   if (!response.ok)
     return error(response.status, `
