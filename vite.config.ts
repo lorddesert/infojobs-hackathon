@@ -9,7 +9,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/infojobs':       {
-        target: 'https://api.infojobs.net/',
+        target: 'https://api.infojobs.net',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/infojobs/, '')
       }
