@@ -44,19 +44,35 @@
 </script>
 
 <form on:submit={handleChange} class="flex gap-3" name="offerSearch">
-	<label for="offerSearch" id="offerSearch">
-		<input
-			placeholder="Puesto, empresa ó palabra clave... "
-			class={`input w-min
+	<input
+		placeholder="Puesto, empresa ó palabra clave... "
+		class={`input w-min
       ${isEmptyString && 'input-warning'}
       ${isNotFound && 'input-error'}`}
-			type="search"
-			name="offerSearch"
-			id="offerSearch"
-		/>
-		<!-- {#if errorMessage}
-			<p class=" w-fit">{errorMessage}</p>
-		{/if} -->
-	</label>
-	<button class={`btn  variant-filled-warning `}> BUSCAR OFERTAS </button>
+		type="search"
+		name="offerSearch"
+		id="offerSearch"
+	/>
+	<button class={`btn variant-filled-warning search-btn `}>
+		<img src="/search.svg" class="search-image" alt="search" />
+		<span>BUSCAR OFERTAS</span>
+	</button>
 </form>
+
+<style>
+	.search-image {
+		/* display: none; */
+		max-width: 25px;
+		max-height: 25px;
+	}
+
+	@media (max-width: 700px) {
+		.search-btn span {
+			display: none;
+		}
+
+		.search-image {
+			display: block;
+		}
+	}
+</style>
