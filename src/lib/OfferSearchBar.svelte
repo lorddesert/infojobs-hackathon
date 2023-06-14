@@ -1,14 +1,22 @@
 <script lang="ts">
 	import { offerList } from '$lib/store';
-	// export let getOffers: (query: string) => Item[]
+	import Loader from './Loader.svelte';
+
+	// State
 	let errorMessage = '';
 	let isEmptyString = false;
 	let isNotFound = false;
+	let isSubmitting = false;
 
+	// Functions
 	function handleChange() {
 		// Is pointing to the offerSearch form
 		//@ts-ignore
 		const query = this[0].value;
+
+		if (!query) return;
+
+		isSubmitting = true;
 
 		getOffers(query);
 	}
@@ -26,14 +34,19 @@
 
 		const data = await response.json();
 
-		console.log(data);
-
 		if (!response.ok) {
 			errorMessage = data.message;
 			return;
 		}
 
+		if (!data.offers.length) {
+			errorMessage = 'No se encontraron resultados para esa busqueda';
+			isSubmitting = false;
+			return;
+		}
+
 		offerList.set(data.offers);
+		isSubmitting = false;
 	}
 
 	function resetInputErrorState() {
@@ -43,19 +56,42 @@
 	}
 </script>
 
+
+
 <form on:submit={handleChange} class="flex gap-3" name="offerSearch">
-	<input
-		placeholder="Puesto, empresa ó palabra clave... "
-		class={`input w-min
-      ${isEmptyString && 'input-warning'}
-      ${isNotFound && 'input-error'}`}
-		type="search"
-		name="offerSearch"
-		id="offerSearch"
-	/>
-	<button class={`btn variant-filled-warning search-btn `}>
-		<img src="/search.svg" class="search-image" alt="search" />
-		<span>BUSCAR OFERTAS</span>
+	<div class="">
+		<input
+			placeholder="Puesto, empresa ó palabra clave... "
+			class={`input border
+					${isEmptyString && 'input-warning'}
+					${isNotFound && 'input-error'}`}
+			type="search"
+			name="offerSearch"
+			id="offerSearch"
+			disabled={isSubmitting}
+		/>
+		{#if errorMessage}
+			<span>{errorMessage}</span>
+		{/if}
+	</div>
+
+	<button
+		class={`btn h-min search-btn
+		variant-filled-warning  `}
+		disabled={isSubmitting}
+	>
+		{#if isSubmitting}
+			<Loader />
+		{:else}
+			<img src="/search.svg" class="search-image" alt="search" />
+		{/if}
+		<span>
+			{#if isSubmitting}
+				BUSCANDO
+			{:else}
+				BUSCAR OFERTAS
+			{/if}
+		</span>
 	</button>
 </form>
 
