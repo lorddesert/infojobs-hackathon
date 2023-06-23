@@ -21,7 +21,7 @@
 		getOffers(query);
 	}
 
-	async function getOffers(query: string) {
+	export async function getOffers(query: string) {
 		if (!query) {
 			isEmptyString = true;
 			errorMessage = 'Necesitas escribir algo!';
